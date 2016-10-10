@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "alexa-app": "^2.1.0",
-    "figo": "^1.6.0"
+    "figo": "^1.6.0",
+    "number-to-words": "^1.2.3"
   },
   "homepage": "https://github.com/JeremyCraigMartinez/figo-alexa#readme"
 }

@@ -20,12 +20,13 @@ module.exports = function(app) {
             FigoHelper.access().then(function(err) {
                 res.say('Bank-a-pizza here, what would you like?').shouldEndSession(false).send();
             });
+            return false;
         }
     );
 
     app.intent('setAccount', {
             'slots':{'PAYMENT':'LITERAL'},
-            'utterances':['{pay with} {paypal|giro|PAYMENT}']
+            'utterances':['{pay with|use} {paypal|giro|PAYMENT} {account}']
         }, function(req, res) {
             var paymentType = req.slot('PAYMENT');
             var reprompt = 'you can choose between a paypal or giro account';
@@ -37,21 +38,23 @@ module.exports = function(app) {
             } else {
                 console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
-                    accounts = accts
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
                     console.log(JSON.stringify(accts));
                     console.log(JSON.stringify(selectedAccount));
-                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is ' + selectedAccount.balance + ' in ' + selectedAccount.currency).shouldEndSession(false).send();
+                    //res.say('ok, I\'ll pay with ' + paymentType + '. ').shouldEndSession(false).send();
+                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is in ' + selectedAccount.currency).shouldEndSession(false).send();
                 });
+                return false;
             }
         }
     );
 
     app.intent('getBalance', {
-            'utterances':['{what is|what\'s} my balance?']
+            'utterances':['{what is|what\'s} my balance']
         }, function(req, res) {
             var prompt = 'Your balance is ' + selectedAccount.balance.balance;
             res.say(prompt).send();
+            return true;
         }
     );
 };

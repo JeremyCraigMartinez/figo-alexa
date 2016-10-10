@@ -20,10 +20,26 @@ FigoHelper.prototype.access = function() {
         session = Promise.promisifyAll(new figo.Session(access_token));
         return null;
     });
-}
+};
 
 FigoHelper.prototype.listAccounts = function() {
-    return session.get_accountsAsync().then(function(accounts) {
+    var basePromise = null;
+    if (!session) {
+        basePromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+            access_token = data.access_token;
+            refresh_token = data.refresh_token;
+            scope = data.scope;
+            session = Promise.promisifyAll(new figo.Session(access_token));
+            return session;
+        });
+    } else {
+        basePromise = Promise.resolve(session);
+    }
+    return basePromise.then(function (session) {
+        return session.get_accountsAsync();
+    }).then(function(accounts) {
+        //console.log(accounts);
+        //console.log(JSON.stringify(accounts));
         return accounts;
     });
 };
