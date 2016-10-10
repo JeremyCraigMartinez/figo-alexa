@@ -10,14 +10,14 @@ var util = require('./util');
 // selected account for pizza payment
 var selectedAccount = null;
 
-FigoHelper.access()
+FigoHelper.access();
 
 module.exports = function(app) {
     app.intent('openBankapizza', {
-            "utterances":["open bank-a-pizza"]
+            "utterances":["{open bank-a-pizza|refresh account access}"]
         }, function(req, res) {
             FigoHelper.access().then(function(err) {
-                res.say('Bank-a-pizza here, what would you like?').send();
+                res.say('Bank-a-pizza here, what would you like?').shouldEndSession(false).send();
             });
         }
     );
@@ -38,7 +38,7 @@ module.exports = function(app) {
                 FigoHelper.listAccounts().then(function(accounts) {
                     selectedAccount = util.getAccount(accounts, 'type', paymentType);
                     console.log(JSON.stringify(selectedAccount));
-                    res.say('ok').shouldEndSession(false).send();
+                    res.say('ok, I\'ll pay with ' + paymentType).shouldEndSession(false).send();
                 });
                 return false;
             }

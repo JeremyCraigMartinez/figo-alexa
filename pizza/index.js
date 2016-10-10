@@ -13,11 +13,12 @@ module.exports = function(app) {
             if (!pizzaType) {
                 var prompt = 'Tell me what pizza you want.';
                 res.say(prompt).reprompt(reprompt).shouldEndSession(false);
-                return true;
+                return false;
             } else {
                 // faking getting pizza
                 if (pizzaType === 'diabolo' || pizzaType === 'margherita' || pizzaType === 'salami') {
                     res.say('Ok, you\'ll get your ' + pizzaType + '.');
+                    res.shouldEndSession(false);
                 } else {
                     var unknownPizzaPrompt = 'I do not know this pizza.';
                     res.say(unknownPizzaPrompt).reprompt(reprompt).shouldEndSession(false);
