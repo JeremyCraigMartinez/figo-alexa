@@ -19,7 +19,7 @@ var greetings = [
 // Define an alexa-app
 var app = new alexa.app('bankapizza');
 app.launch(function(req,res) {
-    var greetingId =Math.floor(Math.random() * greetings.length + 1);
+    var greetingId =Math.floor(Math.random() * greetings.length);
     res.say(greetings[greetingId]);
     res.shouldEndSession(false);
 });

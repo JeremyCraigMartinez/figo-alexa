@@ -5,7 +5,7 @@
 module.exports = function(app) {
     app.intent('pizza_intent', {
             "slots":{"PIZZA":"LITERAL"},
-            "utterances":["{Get me|I want to order} {diabolo|margarita|PIZZA} "]
+            "utterances":["Hey, { Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
         }, function(req, res) {
             //get the slot
             var pizzaType = req.slot('PIZZA');
@@ -16,7 +16,7 @@ module.exports = function(app) {
                 return true;
             } else {
                 // faking getting pizza
-                if (pizzaType === 'diabolo' || pizzaType === 'margarita') {
+                if (pizzaType === 'diabolo' || pizzaType === 'margherita' || pizzaType === 'salami') {
                     res.say('Ok, you\'ll get your ' + pizzaType + '.');
                 } else {
                     var unknownPizzaPrompt = 'I do not know this pizza.';

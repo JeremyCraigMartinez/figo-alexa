@@ -2,8 +2,8 @@
  * Figo related skills
  */
 
-//var FigoHelper = require('./helper');
-var FigoHelper = {}; //new FigoHelper();
+var FigoHelper = require('./helper');
+var FigoHelper = new FigoHelper();
 
 module.exports = function(app) {
     app.intent('getAccounts', {
