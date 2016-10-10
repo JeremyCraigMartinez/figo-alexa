@@ -8,10 +8,19 @@ var pizza = require('./pizza');
 // Allow this module to be reloaded by hotswap when changed
 module.change_code = 1;
 
+var greetings = [
+    'What\'s up. Wanna get some pizza, I guess.',
+    'Moin Digga. Bock auf pizza?',
+    'Vas los Digga ahnma. Pizza oder?',
+    'Veer sind yettst by bankathon. Man braucht vohl pizza',
+    'Vas geht Altuh',
+];
+
 // Define an alexa-app
 var app = new alexa.app('bankapizza');
 app.launch(function(req,res) {
-    res.say('Moin Digga. Bock auf pizza?');
+    var greetingId =Math.floor(Math.random() * greetings.length + 1);
+    res.say(greetings[greetingId]);
     res.shouldEndSession(false);
 });
 
