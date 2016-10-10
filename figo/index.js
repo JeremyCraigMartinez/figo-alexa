@@ -41,8 +41,7 @@ module.exports = function(app) {
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
                     console.log(JSON.stringify(accts));
                     console.log(JSON.stringify(selectedAccount));
-                    //res.say('ok, I\'ll pay with ' + paymentType + '. ').shouldEndSession(false).send();
-                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is in ' + selectedAccount.currency).shouldEndSession(false).send();
+                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                 });
                 return false;
             }
