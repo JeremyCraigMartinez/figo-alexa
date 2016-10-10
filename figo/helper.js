@@ -28,4 +28,10 @@ FigoHelper.prototype.listAccounts = function() {
     });
 };
 
+FigoHelper.prototype.standingOrders = function() {
+    return session.get_standing_ordersAsync(null).then(function(standingOrders) {
+        return standingOrders;
+    });
+};
+
 module.exports = FigoHelper;
