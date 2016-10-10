@@ -38,9 +38,9 @@ module.exports = function(app) {
                 FigoHelper.listAccounts().then(function(accounts) {
                     selectedAccount = util.getAccount(accounts, 'type', paymentType);
                     console.log(JSON.stringify(selectedAccount));
-                    res.say('ok, I\'ll pay with ' + paymentType).shouldEndSession(false).send();
+                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is ' + selectedAccount.balance + ' in ' + selectedAccount.currency).shouldEndSession(false).send();
+                    return true;
                 });
-                return false;
             }
         }
     );
