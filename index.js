@@ -6,7 +6,8 @@ module.change_code = 1;
 // Define an alexa-app
 var app = new alexa.app('pizza');
 app.launch(function(req,res) {
-    res.say("Yay, let's eat some pizza, figo boy");
+    res.say("Moin Digga. Bock auf pizza?");
+    res.shouldEndSession(false);
 });
 
 app.intent('pizza_intent', {
@@ -15,6 +16,7 @@ app.intent('pizza_intent', {
     }, function(req, res) {
         //get the slot
         var pizzaType = req.slot('PIZZA');
+        console.log('pizzaType is '+ pizzaType);
         var reprompt = 'Tell me which pizza you want once more, you mumbling bastard.';
         if (!pizzaType) {
             var prompt = 'Tell me pizza you want.';
