@@ -1,0 +1,19 @@
+{
+  "name": "figo-alexa",
+  "version": "0.0.1",
+  "description": "hackathon amazon al3xa project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeremyCraigMartinez/figo-alexa.git"
+  },
+  "author": "jeremy martinez, max Tkachenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeremyCraigMartinez/figo-alexa/issues"
+  },
+  "homepage": "https://github.com/JeremyCraigMartinez/figo-alexa#readme"
+}
