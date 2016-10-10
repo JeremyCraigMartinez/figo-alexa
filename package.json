@@ -4,7 +4,8 @@
   "description": "hackathon amazon al3xa project",
   "main": "index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "zip": "zip -qr function.zip package.json *.js node_modules"
   },
   "repository": {
     "type": "git",

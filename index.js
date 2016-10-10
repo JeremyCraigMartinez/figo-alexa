@@ -6,10 +6,10 @@ module.change_code = 1;
 // Define an alexa-app
 var app = new alexa.app('pizza');
 app.launch(function(req,res) {
-    res.say("Hello World!!");
+    res.say("Yay, let's eat some pizza, figo boy");
 });
 
-app.intent('pizza', {
+app.intent('pizza_intent', {
         "slots":{"PIZZA":"LITERAL"},
         "utterances":["{Get me|I want to order} {diabolo|margarita|PIZZA} "]
     }, function(req, res) {
@@ -39,4 +39,6 @@ app.utterances = function() {
     return utterancesMethod().replace(/\{\-\|/g, '{');
 };
 
+// Connect the alexa-app to AWS Lambda
+exports.handler = app.lambda();
 module.exports = app;
