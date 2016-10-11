@@ -20,19 +20,19 @@ function registerAll() {
     }, true);
 
     register('howMuchIsNewPhone', {
-        'utterances':['How much is the new Samsung Galaxy Note 7?']
+        'utterances':['How much is the new Samsung Galaxy Note 7']
     }, true);
 
     register('standingOrders', {
-        'utterances':['Do I have any upcoming costs?']
+        'utterances':['Do I have any upcoming costs']
     }, true);
 
     register('canIAffordIt', {
-        'utterances':['Can I afford it?']
+        'utterances':['Can I afford it']
     }, true);
 
     register('nextPaycheck', {
-        'utterances':['{|and} when {is|will} my next paycheck {come|coming}?']
+        'utterances':['{|and} when {is|will} my next paycheck {come|coming}']
     }, true);
 }
 
