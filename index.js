@@ -23,6 +23,7 @@ app.launch(function(req,res) {
     res.say(greetings[greetingId]);
     res.shouldEndSession(false);
 });
+app.locals = {};
 
 pizza(app);
 figo(app);

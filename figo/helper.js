@@ -44,4 +44,16 @@ FigoHelper.prototype.listAccounts = function() {
     });
 };
 
+FigoHelper.prototype.standingOrders = function() {
+    return session.get_standing_ordersAsync(null).then(function(standingOrders) {
+        return standingOrders;
+    });
+};
+
+FigoHelper.prototype.transactions = function() {
+    return session.get_transactionsAsync(null).then(function(transactions) {
+        return transactions;
+    });
+};
+
 module.exports = FigoHelper;
