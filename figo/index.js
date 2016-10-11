@@ -19,6 +19,8 @@ var samsungCost = 720;
 // used to refer to the most recent/relevant item
 var it;
 
+FigoHelper.access();
+
 module.exports = function(app) {
     app.intent('howMuchIsNewPhone', {
             'utterances':['{|Let\'s do a bit of online shopping} What is the price of the new Samsung Galaxy Note']

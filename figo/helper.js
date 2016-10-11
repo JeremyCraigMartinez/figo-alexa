@@ -12,6 +12,16 @@ var session;
 
 function FigoHelper() {}
 
+FigoHelper.prototype.access = function() {
+    return connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+        access_token = data.access_token;
+        refresh_token = data.refresh_token;
+        scope = data.scope;
+        session = Promise.promisifyAll(new figo.Session(access_token));
+        return null;
+    });
+};
+
 FigoHelper.prototype.listAccounts = function() {
     var basePromise = null;
     if (!session) {
@@ -23,9 +33,11 @@ FigoHelper.prototype.listAccounts = function() {
             return session;
         });
     } else {
+        console.log('session here 2');
         basePromise = Promise.resolve(session);
     }
     return basePromise.then(function (session) {
+        console.log('session here 3');
         return session.get_accountsAsync();
     }).then(function(accounts) {
         //console.log(accounts);
