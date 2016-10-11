@@ -148,9 +148,10 @@ module.exports = function(app) {
     app.intent('nextPaycheck', {
             'utterances':['{|and} when {is|will} my next paycheck {come|coming}?']
         }, function(req, res) {
-            var prompt = 'testing trannys';
+            var prompt = 'Based on recent account history, your paycheck should come on the ';
             FigoHelper.transactions().then(function(transactions) {
                 var date = util.predictPaycheck(transactions);
+                prompt += date + 'th.';
                 res.say(prompt).send();
             })
             return false;
