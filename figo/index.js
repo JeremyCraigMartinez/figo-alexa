@@ -58,7 +58,6 @@ module.exports = function(app) {
             } else {
                 //console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
-                    accounts = accts
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
                     balance = selectedAccount.balance.balance
 
