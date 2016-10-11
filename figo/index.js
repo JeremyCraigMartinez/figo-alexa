@@ -19,8 +19,6 @@ var samsungCost = 720;
 // used to refer to the most recent/relevant item
 var it;
 
-FigoHelper.access()
-
 module.exports = function(app) {
     app.intent('howMuchIsNewPhone', {
             'utterances':['{|Let\'s do a bit of online shopping} What is the price of the new Samsung Galaxy Note']
@@ -57,9 +55,8 @@ module.exports = function(app) {
                 prompt = 'That is not a payment option.';
                 reprompt = 'You can choose between a paypal or giro account.';
                 res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
-                return true;
             } else {
-                console.log('payment option: ' + paymentType);
+                //console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
                     accounts = accts
                     selectedAccount = util.getAccount(accts, 'type', paymentType);

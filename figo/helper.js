@@ -12,31 +12,47 @@ var session;
 
 function FigoHelper() {}
 
-FigoHelper.prototype.access = function() {
-    return connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
-        access_token = data.access_token;
-        refresh_token = data.refresh_token;
-        scope = data.scope;
-        session = Promise.promisifyAll(new figo.Session(access_token));
-        return null;
-    });
+FigoHelper.prototype._getSession = function() {
+    var sessionPromise = null;
+    if (!session) {
+        sessionPromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+            access_token = data.access_token;
+            refresh_token = data.refresh_token;
+            scope = data.scope;
+            session = Promise.promisifyAll(new figo.Session(access_token));
+            return session;
+        });
+    } else {
+        sessionPromise = Promise.resolve(session);
+    }
+    return sessionPromise;
 }
 
+FigoHelper.prototype.access = function() {
+    return this._getSession();
+};
+
 FigoHelper.prototype.listAccounts = function() {
-    return session.get_accountsAsync().then(function(accounts) {
-        return accounts;
-    });
+    return this._getSession().then(function onGetSession(session) {
+        return session.get_accountsAsync().then(function(accounts) {
+            return accounts;
+        });
+    })
 };
 
 FigoHelper.prototype.standingOrders = function() {
-    return session.get_standing_ordersAsync(null).then(function(standingOrders) {
-        return standingOrders;
+    return this._getSession().then(function onGetSession(session) {
+        return session.get_standing_ordersAsync(null).then(function(standingOrders) {
+            return standingOrders;
+        });
     });
 };
 
 FigoHelper.prototype.transactions = function() {
-    return session.get_transactionsAsync(null).then(function(transactions) {
-        return transactions;
+    return this._getSession().then(function onGetSession(session) {
+        return session.get_transactionsAsync(null).then(function(transactions) {
+            return transactions;
+        });
     });
 };
 
