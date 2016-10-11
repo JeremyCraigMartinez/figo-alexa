@@ -61,14 +61,22 @@ module.exports = function(app) {
                 console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
-
                     balance = selectedAccount.balance.balance;
+
                     // subtract some of the balance to make dialog work for bank loan suggestion
                     balance = Math.ceil(balance - 1900);
 
-                    console.log(JSON.stringify(accts));
-                    console.log(JSON.stringify(selectedAccount));
-                    res.say('Your' + paymentType +' account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
+                    // check that you have the funds
+                    if (app.locals.pizzaCost && app.locals.pizzaCost > balance) {
+                        prompt = 'You are too poor to afford this pizza.';
+                        reprompt = 'Choose a different account.';
+                        res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
+                    } else {
+                        //console.log(JSON.stringify(accts));
+                        //console.log(JSON.stringify(selectedAccount));
+                        balance = balance - 11;
+                        res.say('Your ' + paymentType+ ' account balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
+                    }
                 });
                 return false;
             }
