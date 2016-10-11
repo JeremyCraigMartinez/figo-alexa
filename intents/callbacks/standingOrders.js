@@ -40,7 +40,7 @@ module.exports = function(req, res) {
             t = (so.standingOrderDetails.timeUnit === 'M') ? 'month' : t;
             t = (so.standingOrderDetails.timeUnit === 'W') ? 'week' : t;
             t = (so.standingOrderDetails.timeUnit === 'Y') ? 'year' : t;
-            var prompt = 'Yes, you have 1. You owe ' +
+            var prompt = 'Yes, you have 1. You owe a tremendous ' +
                           so.orderAmount + ' euro to ' +
                           so.payeeAcct.holderName +
                           ' on day ' + so.standingOrderDetails.execDay +

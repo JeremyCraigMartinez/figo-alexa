@@ -18,15 +18,18 @@ module.exports = function(req, res, paymentType) {
             var selectedAccount = res.session('selectedAccount');
             var pizzaOrder = res.session('pizzaOrder');
 
+            res.session('balance', Math.ceil(selectedAccount.balance.balance - 1900));
+            var balance = res.session('balance');
+
             // check that you have the funds
-            if (pizzaOrder && pizzaOrder.cost > selectedAccount.balance.balance) {
+            if (pizzaOrder && pizzaOrder.cost > balance) {
                 prompt = 'You are too poor to afford this pizza. Your account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency;
                 reprompt = 'Choose a different account.';
                 res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
             } else {
                 //console.log(JSON.stringify(accts));
                 //console.log(JSON.stringify(selectedAccount));
-                res.say('Ok. I\'ll pay with ' + paymentType + ' Your account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency).send();
+                res.say('Ok. I\'ll pay with ' + paymentType + ' Your account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
             }
         });
         return false;
