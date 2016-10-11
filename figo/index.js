@@ -59,7 +59,7 @@ module.exports = function(app) {
                 //console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
-                    balance = selectedAccount.balance.balance
+                    balance = selectedAccount.balance.balance;
 
                     // subtract some of the balance to make dialog work for bank loan suggestion
                     balance = Math.ceil(balance - 1900);
@@ -70,13 +70,13 @@ module.exports = function(app) {
                         reprompt = 'Choose a different account.';
                         res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
                     } else {
-                        console.log(JSON.stringify(accts));
-                        console.log(JSON.stringify(selectedAccount));
+                        //console.log(JSON.stringify(accts));
+                        //console.log(JSON.stringify(selectedAccount));
                         balance = balance - 11;
                         res.say('ok I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                     }
+                    return false;
                 });
-                return false;
             }
         }
     );
