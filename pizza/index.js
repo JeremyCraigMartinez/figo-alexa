@@ -26,4 +26,12 @@ module.exports = function(app) {
             }
         }
     );
+
+    app.intent('enoughForPizza', {
+            'utterances':['{|ok|so} do {|you think} we have enough {for|to order} a pizza']
+        }, function(req, res) {
+            var prompt = 'Honestly, you just took out a loan, can you really afford a pizza right now';
+            res.say(prompt).send();
+        }
+    );
 };
