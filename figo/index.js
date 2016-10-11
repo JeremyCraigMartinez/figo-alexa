@@ -55,6 +55,7 @@ module.exports = function(app) {
                 prompt = 'That is not a payment option.';
                 reprompt = 'You can choose between a paypal or giro account.';
                 res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
+                return true;
             } else {
                 //console.log('payment option: ' + paymentType);
                 FigoHelper.listAccounts().then(function(accts) {
@@ -75,8 +76,8 @@ module.exports = function(app) {
                         balance = balance - 11;
                         res.say('ok I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                     }
-                    return false;
                 });
+                return false;
             }
         }
     );
