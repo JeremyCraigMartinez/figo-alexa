@@ -23,6 +23,14 @@ app.launch(function(req,res) {
     res.say(greetings[greetingId]);
     res.shouldEndSession(false);
 });
+
+app.error = function(exception, request, response) {
+    console.log('exception: ' + JSON.stringify({name: exception.name, message: exception.message, stack: exception.stack}));
+    //console.log('request: ' + JSON.stringify(request));
+    //console.log('response: ' + JSON.stringify(response));
+    response.say("Sorry, something bad happened, but you are fine, I've logged it.");
+};
+
 app.locals = {};
 
 pizza(app);
