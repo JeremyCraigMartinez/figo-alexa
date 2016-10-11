@@ -34,4 +34,10 @@ FigoHelper.prototype.standingOrders = function() {
     });
 };
 
+FigoHelper.prototype.transactions = function() {
+    return session.get_transactionsAsync(null).then(function(transactions) {
+        return transactions;
+    });
+};
+
 module.exports = FigoHelper;

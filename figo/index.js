@@ -48,7 +48,7 @@ module.exports = function(app) {
                     selectedAccount = util.getAccount(accts, 'type', paymentType);
 
                     // check that you have the funds
-                    if (app.locals.pizzaOrder.cost > selectedAccount.balance.balance) {
+                    if (app.locals.pizzaOrder && app.locals.pizzaOrder.cost > selectedAccount.balance.balance) {
                         prompt = 'You are too poor to afford this pizza.';
                         reprompt = 'Choose a different account.';
                         res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
@@ -84,11 +84,11 @@ module.exports = function(app) {
             'utterances':['Do I have any upcoming costs?']
         }, function(req, res) {
             if (!standingOrders) {
-                FigoHelper.standingOrders().then(function(standingOrders) {
-                    console.log(JSON.stringify(standingOrders));
+                FigoHelper.standingOrders().then(function(_standingOrders) {
+                    console.log(JSON.stringify(_standingOrders));
 
                     // if there are no standingOrders, just create one for rent
-                    if (standingOrders.length === 0) {
+                    if (_standingOrders.length === 0) {
                         standingOrders = [
                             {
                                 'orderAcct': {
@@ -112,11 +112,13 @@ module.exports = function(app) {
                                 'paymtPurpose': 'monthly rent'
                             }
                         ]
+                    } else {
+                        standingOrders = _standingOrders;
                     }
                     var so = standingOrders[0], t;
-                    t = (so.standingOrderDetails.timeUnit === 'M') ? 'month' : null;
-                    t = (so.standingOrderDetails.timeUnit === 'W') ? 'week' : null;
-                    t = (so.standingOrderDetails.timeUnit === 'Y') ? 'year' : null;
+                    t = (so.standingOrderDetails.timeUnit === 'M') ? 'month' : t;
+                    t = (so.standingOrderDetails.timeUnit === 'W') ? 'week' : t;
+                    t = (so.standingOrderDetails.timeUnit === 'Y') ? 'year' : t;
                     var prompt = 'Yes, you have 1. You owe ' +
                                   so.orderAmount + ' euro to ' +
                                   so.payeeAcct.holderName +
@@ -133,12 +135,26 @@ module.exports = function(app) {
             'utterances':['Can I afford it?']
         }, function(req, res) {
             var prompt;
-            if (selectedAccount.balance.balance - standingOrders[0].orderAmount > 0) {
-                prompt = 'Yes, after your payment to ' + so.payeeAcct.holderName + ' you will have ' + (selectedAccount.balance.balance - standingOrders[0].orderAmount) + ' in your account.';
+            var so = standingOrders[0];
+            if (selectedAccount.balance.balance - so.orderAmount - samsungCost > 0) {
+                prompt = 'Yes, after your purchase and payment to ' + so.payeeAcct.holderName + ' you will have ' + (selectedAccount.balance.balance - so.orderAmount - samsungCost) + ' in your account.';
             } else {
                 prompt = 'No, you will overdraw your account after your upcoming payments due.';
             }
             res.say(prompt).send();
         }
     );
+
+    app.intent('nextPaycheck', {
+            'utterances':['{|and} when {is|will} my next paycheck {come|coming}?']
+        }, function(req, res) {
+            var prompt = 'testing trannys';
+            FigoHelper.transactions().then(function(transactions) {
+                var date = util.predictPaycheck(transactions);
+                res.say(prompt).send();
+            })
+            return false;
+        }
+    );
+
 };
