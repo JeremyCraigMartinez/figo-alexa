@@ -238,7 +238,7 @@ module.exports = function(app) {
     app.intent('finishDialog', {
             'utterances':['thanks Alexa. Buy']
         }, function(req, res) {
-            var prompt = 'Ebenzo. Biz bald, Digga';
+            var prompt = 'One last thing before I go, you should really consider eating more salads than pizza. Good bye.';
             res.say(prompt).send();
         }
     );

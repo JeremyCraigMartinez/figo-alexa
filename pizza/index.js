@@ -5,7 +5,7 @@
 module.exports = function(app) {
     app.intent('pizza_intent', {
             "slots":{"PIZZA":"LITERAL"},
-            "utterances":["{ Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
+            "utterances":["{ Get me|I want to order|How about getting} a {diablo|margherita|salami|PIZZA} pizza"]
         }, function(req, res) {
             //get the slot
             var pizzaType = req.slot('PIZZA');
@@ -16,9 +16,9 @@ module.exports = function(app) {
                 return true;
             } else {
                 // faking getting pizza
-                if (pizzaType === 'diabolo' || pizzaType === 'margherita' || pizzaType === 'salami') {
+                if (pizzaType === 'diablo' || pizzaType === 'margherita' || pizzaType === 'salami') {
                     app.locals.pizzaCost = 11;
-                    res.say('Ok, your ' + pizzaType + ' pizza is on the way.').shouldEndSession(false);
+                    res.say('Ok, I will use you giro account. Your ' + pizzaType + ' pizza is on the way.').shouldEndSession(false);
                 } else {
                     var unknownPizzaPrompt = 'I do not know this pizza.';
                     res.say(unknownPizzaPrompt).reprompt(reprompt).shouldEndSession(false);
