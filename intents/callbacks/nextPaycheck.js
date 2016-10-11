@@ -10,4 +10,4 @@ module.exports = function(req, res) {
         res.say(prompt).send();
     });
    return false;
-}
+};
