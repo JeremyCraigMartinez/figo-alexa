@@ -1,6 +1,5 @@
 var alexa = require('alexa-app');
-var figo = require('./figo');
-var pizza = require('./pizza');
+var intents = require('./intents');
 
 // get access token
 //FigoHelper.access();
@@ -23,10 +22,15 @@ app.launch(function(req,res) {
     res.say(greetings[greetingId]);
     res.shouldEndSession(false);
 });
-app.locals = {};
 
-pizza(app);
-figo(app);
+app.error = function(exception, request, response) {
+    console.log('exception: ' + JSON.stringify({name: exception.name, message: exception.message, stack: exception.stack}));
+    //console.log('request: ' + JSON.stringify(request));
+    //console.log('response: ' + JSON.stringify(response));
+    response.say("Sorry, something bad happened, but you are fine, I've logged it.");
+};
+
+intents.register(app);
 
 //hack to support custom utterances in utterance expansion string
 var utterancesMethod = app.utterances;
