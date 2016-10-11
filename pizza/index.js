@@ -17,6 +17,7 @@ module.exports = function(app) {
             } else {
                 // faking getting pizza
                 if (pizzaType === 'diabolo' || pizzaType === 'margherita' || pizzaType === 'salami') {
+                    app.locals.pizzaCost = 11;
                     res.say('Ok, you\'ll get your ' + pizzaType + '. How do you want to pay?').shouldEndSession(false);
                 } else {
                     var unknownPizzaPrompt = 'I do not know this pizza.';

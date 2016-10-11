@@ -69,13 +69,14 @@ module.exports = function(app) {
                     balance = Math.ceil(balance - 1900);
 
                     // check that you have the funds
-                    if (app.locals.pizzaOrder && app.locals.pizzaOrder.cost > balance) {
+                    if (app.locals.pizzaCost && app.locals.pizzaCost > balance) {
                         prompt = 'You are too poor to afford this pizza.';
                         reprompt = 'Choose a different account.';
                         res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
                     } else {
                         console.log(JSON.stringify(accts));
                         console.log(JSON.stringify(selectedAccount));
+                        balance = balance - 11;
                         res.say('ok I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                     }
                 });
