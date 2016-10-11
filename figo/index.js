@@ -64,7 +64,9 @@ module.exports = function(app) {
                     balance = selectedAccount.balance.balance;
 
                     // subtract some of the balance to make dialog work for bank loan suggestion
-                    balance = Math.ceil(balance - 1900);
+                    if (paymentType === 'giro') {
+                        balance = Math.ceil(balance - 1900);
+                    }
 
                     // check that you have the funds
                     if (app.locals.pizzaCost && app.locals.pizzaCost > balance) {
