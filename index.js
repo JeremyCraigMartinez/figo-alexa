@@ -9,11 +9,7 @@ var pizza = require('./pizza');
 module.change_code = 1;
 
 var greetings = [
-    'What\'s up. Wanna get some pizza, I guess.',
-    'Moin Digga. Bock auf pizza?',
-    'Vas los Digga ahnma. Pizza oder?',
-    'Veer sind yettst by bankathon. Man braucht vohl pizza',
-    'Vas geht Altuh',
+    'Moin Digga. What\'s up?',
 ];
 
 // Define an alexa-app

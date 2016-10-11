@@ -5,7 +5,7 @@
 module.exports = function(app) {
     app.intent('pizza_intent', {
             "slots":{"PIZZA":"LITERAL"},
-            "utterances":["{ Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
+            "utterances":["Yes, let's get some pizza. { Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
         }, function(req, res) {
             //get the slot
             var pizzaType = req.slot('PIZZA');
