@@ -169,8 +169,8 @@ module.exports = function(app) {
                                   ' of each ' + t;
                     res.say(prompt).shouldEndSession(false).send();
                 });
+                return false;
             }
-            return false;
         }
     );
 
@@ -238,7 +238,7 @@ module.exports = function(app) {
     app.intent('finishDialog', {
             'utterances':['{|so} thanks for the info. Buy']
         }, function(req, res) {
-            var prompt = 'Ebenso. Bis bald, Digga';
+            var prompt = 'Ebenzo. Biz bald, Digga';
             res.say(prompt).send();
         }
     );
