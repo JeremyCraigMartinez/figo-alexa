@@ -26,7 +26,7 @@ module.exports = function(app) {
             'utterances':['open bank-a-pizza']
         }, function(req, res) {
             FigoHelper.access().then(function(err) {
-                res.say('Bank-a-pizza here, what would you like').send();
+                res.say('Bank-a-pizza here, what would you like').shouldEndSession(false).send();
             });
         }
     );
@@ -61,7 +61,7 @@ module.exports = function(app) {
                     } else {
                         console.log(JSON.stringify(accts));
                         console.log(JSON.stringify(selectedAccount));
-                        res.say('ok, your balance is ' + balance + ' euro').send();
+                        res.say('ok I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                     }
                 });
                 return false;
@@ -73,16 +73,16 @@ module.exports = function(app) {
             'utterances':['{what is|what\'s} my balance']
         }, function(req, res) {
             var prompt = 'Your balance is ' + balance;
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
     app.intent('howMuchIsNewPhone', {
-            'utterances':['How much is the new Samsung Galaxy Note 7']
+            'utterances':['How much is the new Samsung Galaxy Note']
         }, function(req, res) {
             var prompt = 'The Samsung Galaxy Note 7 cost ' + samsungCost + ' euro';
             it = samsungCost;
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
@@ -130,7 +130,7 @@ module.exports = function(app) {
                                   so.payeeAcct.holderName +
                                   ' on day ' + so.standingOrderDetails.execDay +
                                   ' of each ' + t;
-                    res.say(prompt).send();
+                    res.say(prompt).shouldEndSession(false).send();
                 });
             }
             return false;
@@ -147,7 +147,7 @@ module.exports = function(app) {
             } else {
                 prompt = 'No, you will overdraw your account after your upcoming payments due.';
             }
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
@@ -158,7 +158,7 @@ module.exports = function(app) {
             FigoHelper.transactions().then(function(transactions) {
                 paycheckDate = util.predictPaycheck(transactions);
                 prompt += paycheckDate + 'th.';
-                res.say(prompt).send();
+                res.say(prompt).shouldEndSession(false).send();
             })
             return false;
         }
@@ -168,6 +168,14 @@ module.exports = function(app) {
             'utterances':['{|so} {|can you} give me a summary {|of everything|of everything so far}']
         }, function(req, res) {
             var prompt = 'The Samsung Galaxy Note costs ' + samsungCost + ' Euro and your Balance is ' + balance + ' Euro. You have  outgoing payments planed of ' + standingOrders[0].orderAmount + ' Euro which all together would leave you with ' + (balance-samsungCost-standingOrders[0].orderAmount) + ' and your next paycheck should come on the ' + paycheckDate + 'th.';
+            res.say(prompt).shouldEndSession(false).send();
+        }
+    );
+
+    app.intent('finishDialog', {
+            'utterances':['{|so} thanks for the info. Buy']
+        }, function(req, res) {
+            var prompt = 'Ebenso. Bis bald, Digga';
             res.say(prompt).send();
         }
     );
@@ -176,7 +184,7 @@ module.exports = function(app) {
             'utterances':['{|ok|so} ask {|my} bank for {|a} loan']
         }, function(req, res) {
             var prompt = 'You can fund a loan of 200 euro for 1 euro a day until October ' + paycheckDate;
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
@@ -184,7 +192,7 @@ module.exports = function(app) {
             'utterances':['{|alright|ok|so} confirm {|the} loan']
         }, function(req, res) {
             var prompt = 'Loan of 200 EUR confirmed. Expected fee for the loan is ' + (paycheckDate-11) + ' Euro';
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
@@ -192,7 +200,7 @@ module.exports = function(app) {
             'utterances':['Buy the Galaxy Note 7']
         }, function(req, res) {
             var prompt = 'Purchase confirmed.  Based on the purchase we strongly recommend a fire extinguisher.';
-            res.say(prompt).send();
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 };
