@@ -7,7 +7,7 @@ function register(name, schema, needsFigoSession) {
 function registerAll() {
     register('pizzaIntent', {
         "slots":{ "PIZZA": "LITERAL" },
-        "utterances":["Hey, { Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
+        "utterances":["{ Get me|I want to order|How about getting} {diabolo|margherita|salami|PIZZA} "]
     });
 
     register('setAccount', {
