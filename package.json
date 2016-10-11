@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm test",
-    "zip": "npm install && zip -qr function.zip package.json *.js node_modules figo pizza"
+    "zip": "npm install && zip -qr function.zip package.json *.js node_modules figo intents"
   },
   "repository": {
     "type": "git",
