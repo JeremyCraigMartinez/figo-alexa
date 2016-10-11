@@ -228,7 +228,7 @@ module.exports = function(app) {
     );
 
     app.intent('buyPhone', {
-            'utterances':['Buy the Galaxy Note 7']
+            'utterances':['Buy the Galaxy Note']
         }, function(req, res) {
             var prompt = 'Purchase confirmed. Based on the purchase we strongly recommend a fire extinguisher.';
             res.say(prompt).shouldEndSession(false).send();
@@ -236,7 +236,7 @@ module.exports = function(app) {
     );
 
     app.intent('finishDialog', {
-            'utterances':['{|so} thanks for the info. Buy']
+            'utterances':['thanks Alexa. Buy']
         }, function(req, res) {
             var prompt = 'Ebenzo. Biz bald, Digga';
             res.say(prompt).send();
