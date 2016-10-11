@@ -48,7 +48,7 @@ module.exports = function(app) {
 
     app.intent('setAccount', {
             'slots':{'PAYMENT':'LITERAL'},
-            'utterances':['{|ok|woah} select {paypal|giro|PAYMENT} account']
+            'utterances':['{pay with} {paypal|giro|PAYMENT}']
         }, function(req, res) {
             var prompt, reprompt;
             var paymentType = req.slot('PAYMENT');
