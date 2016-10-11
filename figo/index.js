@@ -113,7 +113,7 @@ module.exports = function(app) {
                                 },
                                 'paymtPurpose': 'monthly rent'
                             }
-                        ]
+                        ];
                     } else {
                         standingOrders = _standingOrders;
                     }
@@ -163,7 +163,7 @@ module.exports = function(app) {
                 paycheckDate = util.predictPaycheck(transactions);
                 prompt += paycheckDate + 'th.';
                 res.say(prompt).shouldEndSession(false).send();
-            })
+            });
             return false;
         }
     );
@@ -187,7 +187,7 @@ module.exports = function(app) {
     app.intent('buyPhone', {
             'utterances':['Buy the Galaxy Note 7']
         }, function(req, res) {
-            var prompt = 'Purchase confirmed.  Based on the purchase we strongly recommend a fire extinguisher.';
+            var prompt = 'Purchase confirmed. Based on the purchase we strongly recommend a fire extinguisher.';
             res.say(prompt).shouldEndSession(false).send();
         }
     );

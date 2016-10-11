@@ -12,7 +12,7 @@ var session;
 
 function FigoHelper() {}
 
-FigoHelper.prototype._getSession = function() {
+ function getSession() {
     var sessionPromise = null;
     if (!session) {
         sessionPromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
@@ -29,11 +29,11 @@ FigoHelper.prototype._getSession = function() {
 }
 
 FigoHelper.prototype.access = function() {
-    return this._getSession();
+    return getSession();
 };
 
 FigoHelper.prototype.listAccounts = function() {
-    return this._getSession().then(function onGetSession(session) {
+    return getSession().then(function onGetSession(session) {
         return session.get_accountsAsync().then(function(accounts) {
             return accounts;
         });
@@ -41,7 +41,7 @@ FigoHelper.prototype.listAccounts = function() {
 };
 
 FigoHelper.prototype.standingOrders = function() {
-    return this._getSession().then(function onGetSession(session) {
+    return getSession().then(function onGetSession(session) {
         return session.get_standing_ordersAsync(null).then(function(standingOrders) {
             return standingOrders;
         });
@@ -49,7 +49,7 @@ FigoHelper.prototype.standingOrders = function() {
 };
 
 FigoHelper.prototype.transactions = function() {
-    return this._getSession().then(function onGetSession(session) {
+    return getSession().then(function onGetSession(session) {
         return session.get_transactionsAsync(null).then(function(transactions) {
             return transactions;
         });
