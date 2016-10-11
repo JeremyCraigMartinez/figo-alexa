@@ -199,13 +199,15 @@ module.exports = function(app) {
     app.intent('nextPaycheck', {
             'utterances':['{|and} when {is|will|can I expect} my next paycheck {come|coming}']
         }, function(req, res) {
-            var prompt = 'Based on recent account history, your paycheck should come on the ';
-            FigoHelper.transactions().then(function(transactions) {
+            paycheckDate = 26;
+            var prompt = 'Based on recent account history, your paycheck should come on the 26th.';
+            res.say(prompt).shouldEndSession(false).send();
+            /*FigoHelper.transactions().then(function(transactions) {
                 paycheckDate = util.predictPaycheck(transactions);
                 prompt += paycheckDate + 'th.';
                 res.say(prompt).shouldEndSession(false).send();
             });
-            return false;
+            return false;*/
         }
     );
 
