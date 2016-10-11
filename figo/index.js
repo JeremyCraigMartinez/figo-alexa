@@ -22,18 +22,33 @@ var it;
 FigoHelper.access()
 
 module.exports = function(app) {
-    app.intent('openBankapizza', {
-            'utterances':['open bank-a-pizza']
+    app.intent('howMuchIsNewPhone', {
+            'utterances':['{|Let\'s do a bit of online shopping} What is the price of the new Samsung Galaxy Note']
         }, function(req, res) {
-            FigoHelper.access().then(function(err) {
-                res.say('Bank-a-pizza here, what would you like').shouldEndSession(false).send();
-            });
+            var prompt = 'The Samsung Galaxy Note 7 cost ' + samsungCost + ' euro';
+            it = samsungCost;
+            res.say(prompt).shouldEndSession(false).send();
+        }
+    );
+
+    app.intent('getBalance', {
+            'slots':{'ACCOUNT':'LITERAL'},
+            'utterances':['{what is|what\'s} my {|paypal|giro|ACCOUNT} balance']
+        }, function(req, res) {
+            var account = req.slot('ACCOUNT');
+            var reprompt = 'Which account do you mean, paypal or giro';
+            if (!account || (account !== 'paypal' || account !== 'giro')) {
+                res.say('I\'m sorry').reprompt(reprompt).shouldEndSession(false).send();
+                return true;
+            }
+            var prompt = 'Your ' + account + ' account balance is ' + balance;
+            res.say(prompt).shouldEndSession(false).send();
         }
     );
 
     app.intent('setAccount', {
             'slots':{'PAYMENT':'LITERAL'},
-            'utterances':['{pay with} {paypal|giro|PAYMENT}']
+            'utterances':['{|ok|woah} select {paypal|giro|PAYMENT} account']
         }, function(req, res) {
             var prompt, reprompt;
             var paymentType = req.slot('PAYMENT');
@@ -69,25 +84,8 @@ module.exports = function(app) {
         }
     );
 
-    app.intent('getBalance', {
-            'utterances':['{what is|what\'s} my balance']
-        }, function(req, res) {
-            var prompt = 'Your balance is ' + balance;
-            res.say(prompt).shouldEndSession(false).send();
-        }
-    );
-
-    app.intent('howMuchIsNewPhone', {
-            'utterances':['How much is the new Samsung Galaxy Note']
-        }, function(req, res) {
-            var prompt = 'The Samsung Galaxy Note 7 cost ' + samsungCost + ' euro';
-            it = samsungCost;
-            res.say(prompt).shouldEndSession(false).send();
-        }
-    );
-
     app.intent('standingOrders', {
-            'utterances':['Do I have any upcoming costs']
+            'utterances':['Do I have any upcoming payments scheduled']
         }, function(req, res) {
             if (!standingOrders) {
                 FigoHelper.standingOrders().then(function(_standingOrders) {
@@ -138,7 +136,7 @@ module.exports = function(app) {
     );
 
     app.intent('canIAffordIt', {
-            'utterances':['Can I afford it']
+            'utterances':['Can I afford the samsung phone']
         }, function(req, res) {
             var prompt;
             var so = standingOrders[0];
@@ -151,8 +149,16 @@ module.exports = function(app) {
         }
     );
 
+    app.intent('summary', {
+            'utterances':['{|umm} {|that can\'t be right} give me a summary {|of everything|of everything so far}']
+        }, function(req, res) {
+            var prompt = 'The Samsung Galaxy Note costs ' + samsungCost + ' Euro and your Balance is ' + balance + ' Euro. You have  outgoing payments planed of ' + standingOrders[0].orderAmount + ' Euro which all together would leave you with ' + (balance-samsungCost-standingOrders[0].orderAmount) + ' and your next paycheck should come on the ' + paycheckDate + 'th.';
+            res.say(prompt).shouldEndSession(false).send();
+        }
+    );
+
     app.intent('nextPaycheck', {
-            'utterances':['{|and} when {is|will} my next paycheck {come|coming}']
+            'utterances':['{|and} when {is|will|can I expect} my next paycheck {come|coming}']
         }, function(req, res) {
             var prompt = 'Based on recent account history, your paycheck should come on the ';
             FigoHelper.transactions().then(function(transactions) {
@@ -161,22 +167,6 @@ module.exports = function(app) {
                 res.say(prompt).shouldEndSession(false).send();
             })
             return false;
-        }
-    );
-
-    app.intent('summary', {
-            'utterances':['{|so} {|can you} give me a summary {|of everything|of everything so far}']
-        }, function(req, res) {
-            var prompt = 'The Samsung Galaxy Note costs ' + samsungCost + ' Euro and your Balance is ' + balance + ' Euro. You have  outgoing payments planed of ' + standingOrders[0].orderAmount + ' Euro which all together would leave you with ' + (balance-samsungCost-standingOrders[0].orderAmount) + ' and your next paycheck should come on the ' + paycheckDate + 'th.';
-            res.say(prompt).shouldEndSession(false).send();
-        }
-    );
-
-    app.intent('finishDialog', {
-            'utterances':['{|so} thanks for the info. Buy']
-        }, function(req, res) {
-            var prompt = 'Ebenso. Bis bald, Digga';
-            res.say(prompt).send();
         }
     );
 
@@ -201,6 +191,14 @@ module.exports = function(app) {
         }, function(req, res) {
             var prompt = 'Purchase confirmed.  Based on the purchase we strongly recommend a fire extinguisher.';
             res.say(prompt).shouldEndSession(false).send();
+        }
+    );
+
+    app.intent('finishDialog', {
+            'utterances':['{|so} thanks for the info. Buy']
+        }, function(req, res) {
+            var prompt = 'Ebenso. Bis bald, Digga';
+            res.say(prompt).send();
         }
     );
 };
