@@ -29,7 +29,7 @@ module.exports = function(app) {
         }
     );
 
-    app.intent('getBalance', {
+    /*app.intent('getBalance', {
             'slots':{'ACCOUNT':'LITERAL'},
             'utterances':['{what is|what\'s} my {|paypal|giro|ACCOUNT} balance']
         }, function(req, res) {
@@ -42,11 +42,35 @@ module.exports = function(app) {
             var prompt = 'Your ' + account + ' account balance is ' + balance;
             res.say(prompt).shouldEndSession(false).send();
         }
-    );
+    );*/
 
     app.intent('setAccount', {
             'slots':{'PAYMENT':'LITERAL'},
-            'utterances':['{pay with} {paypal|giro|PAYMENT}']
+            'utterances':['{|Woah|okay} what is my {paypal|giro|PAYMENT} account balance {|then}']
+        }, function(req, res) {
+            var paymentType = req.slot('PAYMENT');
+            var reprompt = 'you can choose between a paypal or giro account';
+            if (!paymentType ||
+               (paymentType !== 'paypal' && paymentType !== 'giro')) {
+                var prompt = 'That is not a payment option';
+                res.say(prompt).reprompt(reprompt).shouldEndSession(false).send();
+                return true;
+            } else {
+                console.log('payment option: ' + paymentType);
+                FigoHelper.listAccounts().then(function(accts) {
+                    selectedAccount = util.getAccount(accts, 'type', paymentType);
+                    console.log(JSON.stringify(accts));
+                    console.log(JSON.stringify(selectedAccount));
+                    res.say('ok, I\'ll pay with ' + paymentType + '. Your account balance is ' + selectedAccount.balance.balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
+                });
+                return false;
+            }
+        }
+    );
+
+    /*app.intent('setAccount', {
+            'slots':{'PAYMENT':'LITERAL'},
+            'utterances':['{pay with|use} {paypal|giro|PAYMENT} {account}']
         }, function(req, res) {
             var prompt, reprompt;
             var paymentType = req.slot('PAYMENT');
@@ -74,13 +98,13 @@ module.exports = function(app) {
                         //console.log(JSON.stringify(accts));
                         //console.log(JSON.stringify(selectedAccount));
                         balance = balance - 11;
-                        res.say('ok I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
+                        res.say('Ok. I\'ll pay with ' + paymentType + '. Your balance is ' + balance + ' ' + selectedAccount.currency).shouldEndSession(false).send();
                     }
                 });
                 return false;
             }
         }
-    );
+    );*/
 
     app.intent('standingOrders', {
             'utterances':['Do I have any upcoming payments scheduled']

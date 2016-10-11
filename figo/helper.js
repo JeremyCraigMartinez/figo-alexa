@@ -12,10 +12,10 @@ var session;
 
 function FigoHelper() {}
 
- function getSession() {
-    var sessionPromise = null;
+FigoHelper.prototype.listAccounts = function() {
+    var basePromise = null;
     if (!session) {
-        sessionPromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+        basePromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
             access_token = data.access_token;
             refresh_token = data.refresh_token;
             scope = data.scope;
@@ -23,37 +23,55 @@ function FigoHelper() {}
             return session;
         });
     } else {
-        sessionPromise = Promise.resolve(session);
+        basePromise = Promise.resolve(session);
     }
-    return sessionPromise;
-}
-
-FigoHelper.prototype.access = function() {
-    return getSession();
+    return basePromise.then(function (session) {
+        return session.get_accountsAsync();
+    }).then(function(accounts) {
+        //console.log(accounts);
+        //console.log(JSON.stringify(accounts));
+        return accounts;
+    });
 };
 
-FigoHelper.prototype.listAccounts = function() {
-    return getSession().then(function onGetSession(session) {
-        return session.get_accountsAsync().then(function(accounts) {
-            return accounts;
+FigoHelper.prototype.standingOrders = function() {
+    var basePromise = null;
+    if (!session) {
+        basePromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+            access_token = data.access_token;
+            refresh_token = data.refresh_token;
+            scope = data.scope;
+            session = Promise.promisifyAll(new figo.Session(access_token));
+            return session;
+        });
+    } else {
+        basePromise = Promise.resolve(session);
+    }
+    return basePromise.then(function (session) {
+        return session.get_standing_ordersAsync(null).then(function(standingOrders) {
+            return standingOrders;
         });
     })
 };
 
-FigoHelper.prototype.standingOrders = function() {
-    return getSession().then(function onGetSession(session) {
-        return session.get_standing_ordersAsync(null).then(function(standingOrders) {
-            return standingOrders;
-        });
-    });
-};
-
 FigoHelper.prototype.transactions = function() {
-    return getSession().then(function onGetSession(session) {
+    var basePromise = null;
+    if (!session) {
+        basePromise = connection.credential_loginAsync(access.email, access.password, null, null, null, null).then(function(data) {
+            access_token = data.access_token;
+            refresh_token = data.refresh_token;
+            scope = data.scope;
+            session = Promise.promisifyAll(new figo.Session(access_token));
+            return session;
+        });
+    } else {
+        basePromise = Promise.resolve(session);
+    }
+    return basePromise.then(function (session) {
         return session.get_transactionsAsync(null).then(function(transactions) {
             return transactions;
         });
-    });
+    })
 };
 
 module.exports = FigoHelper;
